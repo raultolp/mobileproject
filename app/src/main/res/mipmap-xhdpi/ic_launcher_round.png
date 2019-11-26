@@ -1,0 +1,180 @@
+package com.example.homeassign1
+
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.Manifest
+import android.app.Activity
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.database.Cursor
+import android.provider.ContactsContract
+import android.util.Log
+import android.widget.*
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
+import kotlin.collections.HashMap
+
+
+class MainActivity : AppCompatActivity() {
+
+    lateinit var myAdapter: MyCursorAdapter
+    lateinit var contactMap: HashMap<Int, ContactModel>
+    lateinit var cursor: Cursor
+    val PERMISSION_REQ_CODE = 777
+
+    companion object {
+        var mailSentTo = mutableSetOf<Int>()
+    }
+
+    private val TAG = "MYTAG Main"
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        if (handlePermissions()){
+            setupContactList("")
+            setupMyAdapter()
+            setupListViewListener()
+            setupSearchViewListener()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (cursor != null)
+            cursor.close()
+    }
+
+    private fun setupMyAdapter() {
+        myAdapter = MyCursorAdapter(this, cursor)
+        contacts_listView.adapter = myAdapter
+    }
+
+    private fun setupSearchViewListener() {
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                setupContactList(query!!)
+                myAdapter.notifyDataSetChanged()
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+//                myAdapter.filter.filter(newText)
+                setupContactList(newText!!)
+                myAdapter.notifyDataSetChanged()
+                return true
+            }
+        })
+    }
+
+    private fun setupContactList(searchString: String) {
+        contactMap = HashMap()
+        val order = ContactsContract.Contacts.DISPLAY_NAME + " ASC"
+
+        // Get Emails - only these who have email address, contacts wihtout phone and email will no be added
+        var projection = arrayOf(
+            ContactsContract.RawContacts._ID,
+            ContactsContract.CommonDataKinds.Email.DISPLAY_NAME_PRIMARY,
+            ContactsContract.CommonDataKinds.Email.CONTACT_ID,
+            ContactsContract.CommonDataKinds.Email.ADDRESS
+        )
+
+        val uri_email = ContactsContract.CommonDataKinds.Email.CONTENT_URI
+//        val filter = ContactsContract.CommonDataKinds.Email.DATA + " <> ''"
+
+        var filter: String? = null
+        var filterArgs = emptyArray<String>()
+
+        if (!searchString.isEmpty()) {
+            filter = ContactsContract.Contacts.DISPLAY_NAME + " LIKE ?"
+            filterArgs = arrayOf("%" + searchString + "%")
+        }
+
+//        filter = ContactsContract.CommonDataKinds.Email.DISPLAY_NAME_PRIMARY+ " LIKE ?"
+//        filterArgs = arrayOf("%r%")
+
+        Log.i("MYTAG Search filter:", "$filter" + filterArgs.contentToString())
+        Log.i("MYTAG Search filter:", "$filter" + filterArgs.contentToString())
+
+//        val cursor_email = contentResolver.query(uri_email, projection, filter, null, order)
+//        val cursor_email = contentResolver.query(uri_email, projection, filter, arrayOf(searchString), order)
+//        val cursor_email = contentResolver.query(uri_email, projection, null, null, order)
+
+        val cursor_email = contentResolver.query(uri_email, projection, filter, filterArgs, order)
+
+        if (cursor_email!!.moveToFirst()) {
+            do {
+                val contactModel = ContactModel()
+                val id = cursor_email.getInt(2)
+                contactModel.id = id
+                contactModel.name = cursor_email.getString(1)
+                contactModel.email = cursor_email.getString(3)
+                contactMap[id] = contactModel
+//                Log.i(TAG, cursor_email.getString(1) + " " + cursor_email.getString(2) + " " + cursor_email.getString(3))
+            } while (cursor_email.moveToNext())
+        }
+
+        cursor = cursor_email
+//        cursor_email.close()
+        Log.i(TAG, "Emails done!" + cursor.count)
+
+        // Get base contact data: ID, name, phone - only these who have phone number
+        val uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI
+
+        projection = arrayOf(
+            ContactsContract.RawContacts._ID,
+            ContactsContract.Contacts.DISPLAY_NAME,
+            ContactsContract.CommonDataKinds.Phone.CONTACT_ID,
+            ContactsContract.CommonDataKinds.Phone.NUMBER
+        )
+
+        val cursor_name = contentResolver.query(uri, projection, null, null, order)
+
+        if (cursor_name!!.moveToFirst()) {
+            do {
+                contactMap[cursor_name.getInt(2)]?.number = cursor_name.getString(3)
+            } while (cursor_name.moveToNext())
+        }
+//        Log.i(TAG, "Numbers done!")
+        cursor_name.close()
+
+//        for((key,value) in contactMap) {
+//            Log.i(TAG, "$key = ${value.id} ${value.name} ${value.number} ${value.email}")
+//        }
+
+        return
+    }
+
+    private fun setupListViewListener() {
+        //choose contact from list and pass data to email intent
+//        contacts_listView.setFilterText(searchView.query.toString())
+
+        contacts_listView.setOnItemClickListener { parent, view, position, id ->
+            //            Toast.makeText(this, "Clicked item : $position",Toast.LENGTH_SHORT).show()
+            val intent: Intent = Intent(this, EmailActivity::class.java)
+            intent.putExtra("position", position)
+
+            val item = contacts_listView.getItemAtPosition(position) as Cursor
+            val id = item.getInt(2)
+            intent.putExtra("id", id)
+            intent.putExtra("name", contactMap[id]?.name)
+            intent.putExtra("number", contactMap[id]?.number)
+            intent.putExtra("email", contactMap[id]?.email)
+            startActivityForResult(intent, 1)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == 1) {
+            var notSent : String = if (resultCode == Activity.RESULT_OK) "" else " not"
+            if (resultCode == Activity.RESULT_OK) {
+                Log.i("MYTAG Email Main", "Email sent!")
+                myAdapter.notifyDataSetChanged()
+            }
+
+            Toast.makeText(this, "Email was$notSent sent!", Toast.LEN
