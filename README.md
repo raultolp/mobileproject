@@ -1,2 +1,2 @@
-# Persoal Travel Blog 
+# Personal Travel Blog 
 by Õie Renata Siimon, Heidi Korp, Raul Tölp
