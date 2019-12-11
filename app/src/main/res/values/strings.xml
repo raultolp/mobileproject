@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">TravelBlog</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="openning_hours">12–18</string>
+    <string name="branch_code">12345</string>
 </resources>
