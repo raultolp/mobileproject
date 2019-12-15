@@ -24,6 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="40dp"
+        android:editable="false"
         android:text="My blogs"
         android:textSize="24sp"
         android:textStyle="bold"
