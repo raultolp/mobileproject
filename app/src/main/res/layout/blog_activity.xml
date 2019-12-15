@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/BlogMainView"
+    android:id="@+id/blogMainView"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -34,9 +34,8 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    <!--        android:editable="false"  - was deprecated, recommended to use inputType instead
-    change to android:inputType="none" in View mode, change to android:inputType="text" in Edit mode
-    -->
+    <!-- android:inputType="text" -> in Edit Mode; change to android:inputType="none" in View mode.
+     (android:editable="false"  - was deprecated, recommended to use inputType instead) -->
 
     <TextView
         android:id="@+id/placeName"
@@ -51,8 +50,7 @@
         android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mapView" />
-    <!--     text="Select a place" -> change to place name (same as marker text) when a place has been selected.
--->
+    <!--     text="Select a place" -> change to place name (same as marker text) when a place has been selected.-->
 
     <Button
         android:id="@+id/openItemButton"
@@ -77,17 +75,16 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="15dp"
         android:hint="Blog description"
         android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/editButton"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/deleteButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.24"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/placeName" />
-    <!--        android:editable="false"  - was deprecated, recommended to use inputType instead
-change to android:inputType="none" in View mode, change to android:inputType="text" in Edit mode
--->
+    <!-- android:inputType="text" -> in Edit Mode; change to android:inputType="none" in View mode.
+     (android:editable="false"  - was deprecated, recommended to use inputType instead) -->
 
     <Button
         android:id="@+id/editButton"
@@ -96,12 +93,25 @@ change to android:inputType="none" in View mode, change to android:inputType="te
         android:layout_marginStart="10dp"
         android:layout_marginBottom="10dp"
         android:text="Edit"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-    <!--     visibility="visible"  -> in View mode; when user presses the button (and Edit mode is activated),
-change visibility to "gone". When Save button is pressed in Edit mode, change visibility back to visible)
--->
+    <!--     visibility="visible"  -> in View mode; visibility="gone"  ->  in Edit Mode
+    (then the button also moves to its designated location on screen). -->
+
+    <Button
+        android:id="@+id/deleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="Delete"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/editButton" />
+    <!--     visibility="gone"  ->  in View mode; visibility="visible"  -> in Edit Mode
+    (then the button also moves to its designated location on screen). -->
 
     <Button
         android:id="@+id/saveButton"
@@ -110,13 +120,11 @@ change visibility to "gone". When Save button is pressed in Edit mode, change vi
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:text="Save"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-    <!--     visibility="gone"  -> so user cannot push this button in View mode;
-change visibility to "visible" when Edit button has been pressed. (then the button also moves to
-its designated location on screen). Change back to 'gone' when Save button is pressed.
--->
+    <!--     visibility="gone"  ->  in View mode; visibility="visible"  -> in Edit Mode
+    (then the button also moves to its designated location on screen). -->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

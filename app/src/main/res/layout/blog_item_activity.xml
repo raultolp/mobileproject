@@ -1,6 +1,170 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/blogDetailedView"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</LinearLayout>
+    <EditText
+        android:id="@+id/blogItemTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="10dp"
+        android:hint="Place name"
+        android:inputType="text"
+        android:text=""
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <!-- android:inputType="text" -> in Edit Mode; change to android:inputType="none" in View mode.
+ (android:editable="false"  - was deprecated, recommended to use inputType instead) -->
+
+    <TextView
+        android:id="@+id/dateTimeField"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:hint="Date and time"
+        android:textSize="18sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/blogItemTitle" />
+    <!-- android:visibility="visible" -> when date and time are available (obtained from photo's data)
+    otherwise: android:visibility="gone"-->
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="0dp"
+        android:layout_height="218dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dateTimeField"
+        app:srcCompat="@drawable/nophoto" />
+
+    <ImageButton
+        android:id="@+id/imageAddButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/dateTimeField"
+        app:srcCompat="@android:drawable/ic_input_add" />
+    <!--     visibility="visible"  -> in Edit mode, when no photo has beed added;
+(then the button also moves to its designated location on screen).
+visibility="gone"  -> always in View Mode, and in Edit mode when a photo has been added. -->
+
+    <ImageButton
+        android:id="@+id/imageDeleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/dateTimeField"
+        app:srcCompat="@android:drawable/ic_delete" />
+    <!--     visibility="visible"  -> in Edit mode, when a photo has beed added;
+(then the button also moves to its designated location on screen).
+visibility="gone"  -> always in View Mode, and in Edit mode when no photo has been added. -->
+
+    <EditText
+        android:id="@+id/blogItemDescription"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:hint="Description"
+        android:inputType="text"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/deleteButton2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/prevButton" />
+    <!-- android:inputType="text" -> in Edit Mode; change to android:inputType="none" in View mode.
+     (android:editable="false"  - was deprecated, recommended to use inputType instead) -->
+
+
+    <Button
+        android:id="@+id/editButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="Edit"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+    <!--     visibility="visible"  -> in View mode; visibility="gone"  ->  in Edit Mode
+    (then the button also moves to its designated location on screen). -->
+
+    <Button
+        android:id="@+id/deleteButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="Delete"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/editButton"
+        app:layout_constraintStart_toStartOf="parent" />
+    <!--     visibility="gone"  ->  in View mode; visibility="visible"  -> in Edit Mode
+    (then the button also moves to its designated location on screen). -->
+
+    <Button
+        android:id="@+id/saveButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="Save"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+    <!--     visibility="gone"  ->  in View mode; visibility="visible"  -> in Edit Mode
+    (then the button also moves to its designated location on screen). -->
+
+    <Button
+        android:id="@+id/prevButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:text="Previous"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+    <!--     visibility="visible"  -> when this photo is not the first one;
+    visibility="gone", when this photo is the first one.  -->
+
+    <Button
+        android:id="@+id/nextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
+        android:text="Next"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+    <!--     visibility="visible"  -> when at least one photo has been saved;
+    otherwise: visibility="gone".  -->
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
