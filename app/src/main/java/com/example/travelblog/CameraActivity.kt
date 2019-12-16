@@ -3,6 +3,7 @@ package com.example.travelblog
 import android.app.Activity
 import android.hardware.Camera
 import android.os.Bundle
+import android.widget.Button
 import android.widget.FrameLayout
 
 class CameraActivity : Activity() {
@@ -27,6 +28,13 @@ class CameraActivity : Activity() {
             val preview: FrameLayout = findViewById(R.id.camera_preview)
             preview.addView(it)
         }
+
+        val captureButton: Button = findViewById(R.id.button_capture)
+        captureButton.setOnClickListener {
+            // get an image from the camera
+// TODO           mCamera?.takePicture(null, null, picture)
+        }
+
     }
 
     /** A safe way to get an instance of the Camera object. */
@@ -38,5 +46,6 @@ class CameraActivity : Activity() {
             null // returns null if camera is unavailable
         }
     }
+
 
 }
