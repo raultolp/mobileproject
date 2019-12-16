@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/blogMainView"
+    android:id="@+id/ConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -12,24 +12,28 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginTop="45dp"
+        android:onClick="backToMain"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/back2" />
+    <!--Source of icon: https://favpng.com/png_view/green-back-button-columns-android-application-software-png/WBNHeAur -->
 
     <EditText
         android:id="@+id/blogTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp"
         android:hint="Blog title"
         android:inputType="text"
         android:text=""
-        android:textSize="32sp"
+        android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/backButton"
         app:layout_constraintTop_toTopOf="parent" />
+    <!-- android:inputType="text" -> in Edit Mode; change to android:inputType="none" in View mode.
+     (android:editable="false"  - was deprecated, recommended to use inputType instead) -->
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView"
@@ -42,9 +46,6 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/blogTitle" />
-
-    <!-- android:inputType="text" -> in Edit Mode; change to android:inputType="none" in View mode.
-     (android:editable="false"  - was deprecated, recommended to use inputType instead) -->
 
     <TextView
         android:id="@+id/placeName"
@@ -67,6 +68,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
+        android:onClick="openBlogItem"
         android:text="Open"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
@@ -101,6 +103,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginBottom="10dp"
+        android:onClick="editInputs"
         android:text="Edit"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -114,12 +117,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginBottom="10dp"
+        android:onClick="cancelInputs"
         android:text="Cancel"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-    <!--     visibility="visible"  -> in Edit mode; visibility="gone"  ->  in View Mode
-(then the button also moves to its designated location on screen). -->
+    <!--     visibility="gone"  ->  in View mode; visibility="visible"  -> in Edit Mode
+    (then the button also moves to its designated location on screen). -->
 
     <Button
         android:id="@+id/deleteButton"
@@ -127,6 +131,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:text="Delete"
+        android:onClick="deleteBlog"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -142,14 +147,24 @@
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:text="Save"
+        android:onClick="saveBlog"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
     <!--     visibility="gone"  ->  in View mode; visibility="visible"  -> in Edit Mode
     (then the button also moves to its designated location on screen). -->
 
-    <!--Source of icon: https://favpng.com/png_view/green-back-button-columns-android-application-software-png/WBNHeAur -->
-
+    <Button
+        android:id="@+id/ajutineNupp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ajutine"
+        android:onClick="onPlaceSelected"
+        app:layout_constraintBottom_toTopOf="@+id/mapView"
+        app:layout_constraintEnd_toStartOf="@+id/mapView"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/mapView"
+        app:layout_constraintTop_toBottomOf="@+id/mapView" />
+    <!--     Ajutine nupp, et saaks 3. vaatesse edasi liikuda, kui maps veel valmis pole -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

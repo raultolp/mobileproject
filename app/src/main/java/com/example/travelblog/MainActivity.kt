@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.Marker
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -25,13 +26,47 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        //TODO: toolbar
+        //TODO: permissions
+        //TODO: spinner
+
         // TODO: NB! LÕPUS KASUTA Camera.release()
         checkCameraHardware(this)
 
+/*        //LAUNCHING MAP ACTIVITY:
         mapsActivity = MapsActivity()
-        showMap()
+        showMap()*/
     }
 
+    //OPENING EXISTING BLOG (FROM SPINNER):
+    fun openBlog(view: View) {
+        //TODO: pass on database handle through intent (?)
+        val intent = Intent(this, BlogActivity::class.java)
+        intent.putExtra("edit mode", false)
+        intent.putExtra("blog name", "Amazing spots in Tartu") //TODO: get blogName from spinner (vb-olla peaks kaasa panema hoopis blogi ID andmebaasis?)
+        startActivityForResult(intent, 1)
+    }
+
+    //OPENING NEW BLOG ('NEW' BUTTON):
+    fun createBlog(view: View) {
+        //TODO: pass on database handle through intent (?)
+        val intent = Intent(this, BlogActivity::class.java)
+        intent.putExtra("edit mode", true)
+        intent.putExtra("blog name", "new blog")
+        startActivityForResult(intent, 1)  //need to get back the name of new blog
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        //Getting values from intent:
+        if (requestCode==1 && resultCode==2){
+            var newBlogName = data?.getStringExtra("blogName")
+            //TODO: add name of new blog to spinner, if name not emty string
+        }
+    }
+
+    //SHOW MAP:
     private fun showMap() {
         val intent = Intent(this, MapsActivity::class.java)
         startActivity(intent)

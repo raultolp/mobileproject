@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/blogDetailedView"
+    android:id="@+id/ConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -12,20 +12,22 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginTop="45dp"
+        android:onClick="backToBlog"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/back2" />
+    <!--Source of icon: https://favpng.com/png_view/green-back-button-columns-android-application-software-png/WBNHeAur -->
 
     <EditText
         android:id="@+id/blogItemTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp"
         android:hint="Place name"
         android:inputType="text"
         android:text=""
-        android:textSize="32sp"
+        android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/backButton"
@@ -51,8 +53,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="0dp"
-        android:layout_height="218dp"
+        android:layout_width="389dp"
+        android:layout_height="240dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp"
@@ -68,6 +70,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp"
         android:visibility="visible"
+        android:onClick="openCamera"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/dateTimeField"
         app:srcCompat="@mipmap/camera_icon_green" />
@@ -80,6 +83,8 @@ visibility="gone"  -> always in View Mode, and in Edit mode when a photo has bee
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:visibility="visible"
+        android:onClick="fileUpload"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/cameraButton"
         app:srcCompat="@mipmap/upload_icon_green" />
@@ -92,6 +97,7 @@ visibility="gone"  -> always in View Mode, and in Edit mode when a photo has bee
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
+        android:onClick="deleteImage"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="@+id/imageView"
         app:srcCompat="@android:drawable/ic_delete" />
@@ -126,6 +132,7 @@ visibility="gone"  -> always in View Mode, and in Edit mode when no photo has be
         android:layout_marginStart="10dp"
         android:layout_marginBottom="10dp"
         android:text="Edit"
+        android:onClick="editItemInputs"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -139,11 +146,12 @@ visibility="gone"  -> always in View Mode, and in Edit mode when no photo has be
         android:layout_marginStart="10dp"
         android:layout_marginBottom="10dp"
         android:text="Cancel"
+        android:onClick="cancelItemInputs"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-    <!--     visibility="visible"  -> in Edit mode; visibility="gone"  ->  in View Mode
-(then the button also moves to its designated location on screen). -->
+    <!--     visibility="gone"  ->  in View mode; visibility="visible"  -> in Edit Mode
+    (then the button also moves to its designated location on screen). -->
 
     <Button
         android:id="@+id/deleteButton2"
@@ -151,6 +159,7 @@ visibility="gone"  -> always in View Mode, and in Edit mode when no photo has be
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:text="Delete"
+        android:onClick="deletePlace"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -167,6 +176,7 @@ visibility="gone"  -> always in View Mode, and in Edit mode when no photo has be
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:text="Save"
+        android:onClick="savePlace"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -180,6 +190,7 @@ visibility="gone"  -> always in View Mode, and in Edit mode when no photo has be
         android:layout_marginStart="15dp"
         android:layout_marginTop="10dp"
         android:text="Previous"
+        android:onClick="openPreviousImage"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
@@ -193,14 +204,11 @@ visibility="gone"  -> always in View Mode, and in Edit mode when no photo has be
         android:layout_marginTop="10dp"
         android:layout_marginEnd="15dp"
         android:text="Next"
+        android:onClick="openNextImage"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
     <!--     visibility="visible"  -> when at least one photo has been saved;
     otherwise: visibility="gone".  -->
-
-    <!--Source of icon: https://favpng.com/png_view/green-back-button-columns-android-application-software-png/WBNHeAur -->
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
