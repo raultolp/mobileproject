@@ -106,7 +106,6 @@ class BlogActivity: AppCompatActivity() {
         cancelButton.visibility = View.GONE
         deleteButton.visibility = View.GONE
         saveButton.visibility = View.GONE
-        ajutineNupp.visibility = View.GONE
     }
 
     fun activateEditMode() {
@@ -117,7 +116,6 @@ class BlogActivity: AppCompatActivity() {
         cancelButton.visibility = View.VISIBLE
         deleteButton.visibility = View.VISIBLE
         saveButton.visibility = View.VISIBLE
-        ajutineNupp.visibility = View.VISIBLE
     }
 
     //BACK BUTTON:
