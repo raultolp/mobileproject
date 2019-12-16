@@ -8,10 +8,10 @@
 
     <ImageButton
         android:id="@+id/backButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="45dp"
+        android:layout_width="54dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="32dp"
         android:onClick="backToBlog"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -27,6 +27,7 @@
         android:hint="Place name"
         android:inputType="text"
         android:text=""
+        android:textColor="#36A735"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -53,8 +54,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="389dp"
-        android:layout_height="240dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp"
@@ -65,14 +66,14 @@
 
     <ImageButton
         android:id="@+id/cameraButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_width="70dp"
+        android:layout_height="69dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
-        android:visibility="visible"
         android:onClick="openCamera"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/dateTimeField"
+        app:layout_constraintTop_toTopOf="@+id/imageView"
         app:srcCompat="@mipmap/camera_icon_green" />
     <!--     visibility="visible"  -> in Edit mode, when no photo has beed added;
 (then the button also moves to its designated location on screen).
@@ -80,12 +81,13 @@ visibility="gone"  -> always in View Mode, and in Edit mode when a photo has bee
 
     <ImageButton
         android:id="@+id/uploadButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="65dp"
+        android:layout_height="70dp"
         android:layout_marginTop="10dp"
-        android:visibility="visible"
+        android:layout_marginEnd="10dp"
         android:onClick="fileUpload"
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cameraButton"
         app:srcCompat="@mipmap/upload_icon_green" />
     <!--     visibility="visible"  -> in Edit mode, when no photo has beed added;
@@ -96,8 +98,8 @@ visibility="gone"  -> always in View Mode, and in Edit mode when a photo has bee
         android:id="@+id/imageDeleteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:onClick="deleteImage"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="@+id/imageView"
         app:srcCompat="@android:drawable/ic_delete" />
@@ -131,8 +133,8 @@ visibility="gone"  -> always in View Mode, and in Edit mode when no photo has be
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginBottom="10dp"
-        android:text="Edit"
         android:onClick="editItemInputs"
+        android:text="Edit"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
