@@ -28,7 +28,7 @@ class CameraActivity : Activity() {
     //    private var preview: SurfaceView? = null
 //    private var mediaRecorder: MediaRecorder? = null
     val MEDIA_TYPE_IMAGE = 1
-    val MEDIA_TYPE_VIDEO = 2
+//    val MEDIA_TYPE_VIDEO = 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -116,7 +116,7 @@ class CameraActivity : Activity() {
 
         val mediaStorageDir = File(
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-            "MyCameraApp"
+            "TravelBlog"
         )
         // This location works best if you want the created images to be shared
         // between applications and persist after your app has been uninstalled.
@@ -125,7 +125,7 @@ class CameraActivity : Activity() {
         mediaStorageDir.apply {
             if (!exists()) {
                 if (!mkdirs()) {
-                    Log.d("MyCameraApp", "failed to create directory")
+                    Log.d("TravelBlog", "failed to create directory")
                     return null
                 }
             }
@@ -137,9 +137,9 @@ class CameraActivity : Activity() {
             MEDIA_TYPE_IMAGE -> {
                 File("${mediaStorageDir.path}${File.separator}IMG_$timeStamp.jpg")
             }
-            MEDIA_TYPE_VIDEO -> {
-                File("${mediaStorageDir.path}${File.separator}VID_$timeStamp.mp4")
-            }
+//            MEDIA_TYPE_VIDEO -> {
+//                File("${mediaStorageDir.path}${File.separator}VID_$timeStamp.mp4")
+//            }
             else -> null
         }
     }

@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.mycameraapi.CameraActivity
 import com.example.travelblog.room.BlogEntity
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -26,9 +27,9 @@ class MainActivity : AppCompatActivity() {
     lateinit var blogTitlesAdapter: BlogTitlesAdapter
 
     val permissions = arrayOf(
-        android.Manifest.permission.CAMERA,
-        android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-        android.Manifest.permission.ACCESS_FINE_LOCATION)
+        Manifest.permission.CAMERA,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        Manifest.permission.ACCESS_FINE_LOCATION)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,6 +72,10 @@ class MainActivity : AppCompatActivity() {
 /*        //LAUNCHING MAP ACTIVITY:
         mapsActivity = MapsActivity()
         showMap()*/
+
+        // Camera test
+//        val intent = Intent(this, CameraActivity::class.java)
+//        startActivity(intent)
     }
 
     //OPENING EXISTING BLOG (FROM LISTVIEW):
@@ -116,17 +121,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // TODO : Fix needed
-//    override fun onStart() {
-//        super.onStart()
-//        if (hasNoPermissions()) {
-//            requestPermission()
-//        }else{
-//            checkCameraHardware(this)
-//        }
-//    }
+//     TODO : Fix needed
+    override fun onStart() {
+        super.onStart()
+        if (hasNoPermissions()) {
+            requestPermission()
+        }
+    }
 
-    private fun hasNoPermissions(): Boolean{
+    private fun hasNoPermissions(): Boolean {
         return ContextCompat.checkSelfPermission(this,
             Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this,
             Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this,
@@ -134,7 +137,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun requestPermission(){
-        ActivityCompat.requestPermissions(this, permissions,0)
+        ActivityCompat.requestPermissions(this, permissions, 0)
     }
 
     override fun onStop() {
