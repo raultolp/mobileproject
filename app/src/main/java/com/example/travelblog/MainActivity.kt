@@ -28,7 +28,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var blogIds: Array<Int>
     var blogTitles = arrayOf(String)
     //var blogIds = arrayOf(Int)
-    val permissions = arrayOf(android.Manifest.permission.CAMERA,
+    val permissions = arrayOf(
+        android.Manifest.permission.CAMERA,
         android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
         android.Manifest.permission.ACCESS_FINE_LOCATION)
 
@@ -148,7 +149,7 @@ class MainActivity : AppCompatActivity() {
     }
     private fun hasNoPermissions(): Boolean{
         return ContextCompat.checkSelfPermission(this,
-            Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this,
+            Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this,
             Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this,
             Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
     }
