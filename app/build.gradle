@@ -3,6 +3,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 29
@@ -38,4 +39,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-games:19.0.0' //was added- ok
     implementation 'com.koushikdutta.ion:ion:3.0.8'
     implementation 'com.google.android.material:material:1.0.0'//added
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
+    implementation 'android.arch.persistence.room:runtime:1.1.1'
+    kapt 'android.arch.persistence.room:compiler:1.1.1'
 }

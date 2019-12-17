@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import com.example.travelblog.room.BlogEntity
 import kotlinx.android.synthetic.main.blog_activity.*
 
 
@@ -17,19 +18,29 @@ class BlogActivity: AppCompatActivity() {
     var blogName = ""
     var selectedPlaceIsNew = false
     var description = ""
+    var blogId = 0
+    var blog = BlogEntity(0, "", "")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.blog_activity)
         //setContentView(R.layout.activity_main)
 
+        var db = LocalDbClient.getDatabase(applicationContext)
+        //db?.getBlogDao()?.insertRecipes(myRecipe)
+
         //Getting values passed on through indents:
         editMode = intent.getBooleanExtra("edit mode", false)
         if (!editMode){
             deactivateEditMode()
-            blogName = intent.getStringExtra("blog name")
+            blogId = intent.getIntExtra("blog id", 0)
+            blog= db?.getBlogDao()?.loadSingleBlog(blogId)!!
+            //blogName = intent.getStringExtra("blog name")
+            blogName = blog.blogTitle.toString()
+            description = blog.blogDescription.toString()
+
             blogTitle.text = Editable.Factory.getInstance().newEditable(blogName)
-            description = "An amazing place to visit!"  //TODO: find description from database
+            //description = "An amazing place to visit!"  //TODO: find description from database
             blogDescription.text = Editable.Factory.getInstance().newEditable(description)
         } else {
             activateEditMode()

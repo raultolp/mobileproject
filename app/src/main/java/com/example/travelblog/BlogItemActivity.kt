@@ -88,13 +88,16 @@ class BlogItemActivity: AppCompatActivity() {
 
     //DELETE BUTTON:
     fun deletePlace(view: View) {
-        //TODO: add content
+        //TODO: add content; deletes the current blog item entry (photo, description), and
+        //opens previous (or next) entry. Only when the last entry is deleted, the Blog Item
+        //itself is deleted as well.
+        //If unsaved new entry is deleted, this equals to pushing cancel button.
         finish() //back to Main Activity
     }
 
     //SAVE BUTTON:
     fun savePlace(view: View) {
-        //TODO: add content; dont allow saving two places with same name, or saving without having uploaded a photo
+        //TODO: add content; dont allow saving two places with same name, or saving entry without having uploaded a photo
         deactivateItemEditMode()
     }
 
