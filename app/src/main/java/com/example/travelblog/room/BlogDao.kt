@@ -92,7 +92,7 @@ interface BlogDao {
 
     //Delete blog item (delete its last entry separately before deleting the blog item): //TODO: CHECK IF DELETES AUTOMATICALLY!
     @Delete
-    fun deleteBlogItem(vararg item:  BlogItemEntity)
+    fun deleteBlogItem(vararg item: BlogItemEntity)
 
     //Delete blog item entry:
     @Delete

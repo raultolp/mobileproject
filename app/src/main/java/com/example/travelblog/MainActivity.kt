@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var mapsActivity: MapsActivity
+    //lateinit var mapsActivity: MapsActivity
     private val TAG = "MYAPI"
     private lateinit var model: BlogViewModel
     lateinit var blogTitlesAdapter: BlogTitlesAdapter
@@ -98,10 +98,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     //SHOW MAP:
-    private fun showMap() {
+/*    private fun showMap() {
         val intent = Intent(this, MapsActivity::class.java)
         startActivity(intent)
-    }
+    }*/
 
     /** Check if this device has a camera */
     private fun checkCameraHardware(context: Context): Boolean {
