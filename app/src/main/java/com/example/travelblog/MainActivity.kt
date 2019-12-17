@@ -116,14 +116,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        if (hasNoPermissions()) {
-            requestPermission()
-        }else{
-            checkCameraHardware(this)
-        }
-    }
+    // TODO : Fix needed
+//    override fun onStart() {
+//        super.onStart()
+//        if (hasNoPermissions()) {
+//            requestPermission()
+//        }else{
+//            checkCameraHardware(this)
+//        }
+//    }
+
     private fun hasNoPermissions(): Boolean{
         return ContextCompat.checkSelfPermission(this,
             Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this,
