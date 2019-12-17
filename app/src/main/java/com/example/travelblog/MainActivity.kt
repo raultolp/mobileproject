@@ -1,5 +1,6 @@
 package com.example.travelblog
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -10,6 +11,8 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.travelblog.room.BlogEntity
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -25,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var blogIds: Array<Int>
     var blogTitles = arrayOf(String)
     //var blogIds = arrayOf(Int)
+    val permissions = arrayOf(android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +36,8 @@ class MainActivity : AppCompatActivity() {
 
         //TODO: toolbar
         //TODO: permissions
+
+
 
         // TODO: NB! LÕPUS KASUTA Camera.release()
         checkCameraHardware(this)
@@ -132,6 +138,31 @@ class MainActivity : AppCompatActivity() {
         } else {
             Log.i(TAG, "Camera NOT FOUND!!!")
             false
+        }
+    }
+
+    private fun hasNoPermissions(): Boolean{
+        return ContextCompat.checkSelfPermission(this,
+            Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this,
+            Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
+    }
+
+    fun requestPermission(){
+        ActivityCompat.requestPermissions(this, permissions,0)
+    }
+
+    override fun onStop() {
+        super.onStop()
+// TODO        Camera.release()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(!hasNoPermissions()){
+            val intent = Intent(baseContext, MainActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 }
