@@ -1,4 +1,3 @@
-/*
 @file:Suppress("LossyEncoding")
 
 package com.example.travelblog
@@ -7,9 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-//import kotlinx.android.synthetic.main.single_recipe.view.*  //praksis ka see
-import com.example.travelblog.MainActivity
 import com.example.travelblog.room.BlogEntity
+import kotlinx.android.synthetic.main.list_row.view.*
+import com.example.travelblog.MainActivity
+
 
 //pulls data from a RecipeViewModels entityArray member variable.
 //It is a custom adapter, based on BaseAdapter.
@@ -19,25 +19,26 @@ import com.example.travelblog.room.BlogEntity
 
 // This adapter is used in MainActivity.
 
-class BlogAdapter(var model: BlogViewModel,  var activity: MainActivity) : BaseAdapter() {
+class BlogTitlesAdapter(var model: BlogViewModel, var activity: MainActivity) : BaseAdapter() {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view: View
         if (convertView == null) {
             val layoutInflater = LayoutInflater.from(parent?.context)
-            view = layoutInflater.inflate(R.layout.single_recipe, parent, false)
+            view = layoutInflater.inflate(R.layout.list_row, parent, false)
         } else{
             view = convertView
         }
 
-        val recipe = getItem(position)
+        val item = getItem(position)
 
-        view.recipeTitleTextview.text = recipe.title
-        view.recipeAuthorTextview.text = recipe.author
-        view.recipePreptimeTextview.text = recipe.prepTime.toString() //added
+        view.list_row_t.text = item.blogTitle
+        view.list_row_t.tag = item.blogId
+/*        view.recipeAuthorTextview.text = recipe.author
+        view.recipePreptimeTextview.text = recipe.prepTime.toString() //added*/
 
         view.setOnClickListener {
-            activity.openDetails(recipe.id)
+            activity.openBlog(item.blogId)
         }
 
         return view
@@ -56,4 +57,3 @@ class BlogAdapter(var model: BlogViewModel,  var activity: MainActivity) : BaseA
     }
 }
 
-*/

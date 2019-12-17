@@ -18,16 +18,14 @@ class BlogActivity: AppCompatActivity() {
     var blogName = ""
     var selectedPlaceIsNew = false
     var description = ""
-    var blogId = 0
+    var blogId = -1
     var blog = BlogEntity(0, "", "")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.blog_activity)
-        //setContentView(R.layout.activity_main)
 
         var db = LocalDbClient.getDatabase(applicationContext)
-        //db?.getBlogDao()?.insertRecipes(myRecipe)
 
         //Getting values passed on through indents:
         editMode = intent.getBooleanExtra("edit mode", false)
@@ -35,21 +33,14 @@ class BlogActivity: AppCompatActivity() {
             deactivateEditMode()
             blogId = intent.getIntExtra("blog id", 0)
             blog= db?.getBlogDao()?.loadSingleBlog(blogId)!!
-            //blogName = intent.getStringExtra("blog name")
             blogName = blog.blogTitle.toString()
             description = blog.blogDescription.toString()
-
             blogTitle.text = Editable.Factory.getInstance().newEditable(blogName)
-            //description = "An amazing place to visit!"  //TODO: find description from database
             blogDescription.text = Editable.Factory.getInstance().newEditable(description)
         } else {
             activateEditMode()
         }
-
-
     }
-
-
 
     //OPEN BUTTON:
     fun openBlogItem(view: View) {
@@ -132,7 +123,15 @@ class BlogActivity: AppCompatActivity() {
     //BACK BUTTON:
     fun backToMain(view: View) {
         var intent = Intent()
-        intent.putExtra("blogName", blogName)
+
+        //AJUTINE:
+        val db = LocalDbClient.getDatabase(applicationContext)!!
+        var blog2Title = "title 3"
+        var blog2Desc = "desc 3"
+        var blog2 = BlogEntity(0, blog2Title, blog2Desc) //0 corresponds to 'no value', autogenerates id
+        db?.getBlogDao()?.addBlog(blog2)
+
+
         setResult(2, intent) // setResult(resultCode, resultIntent)
         finish() //back to Main Activity
     }

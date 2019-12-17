@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProviders
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.travelblog.room.BlogEntity
@@ -21,13 +22,9 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var mapsActivity: MapsActivity
     private val TAG = "MYAPI"
-    //lateinit var listAdapter: ArrayAdapter<String>
-    lateinit var custAdapter: ownAdapter
-    //lateinit var listItems : ListView
-    //lateinit var blogTitles: Array<String>  //= arrayOf()
-    lateinit var blogIds: Array<Int>
-    var blogTitles = arrayOf(String)
-    //var blogIds = arrayOf(Int)
+    private lateinit var model: BlogViewModel
+    lateinit var blogTitlesAdapter: BlogTitlesAdapter
+
     val permissions = arrayOf(
         android.Manifest.permission.CAMERA,
         android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -41,9 +38,15 @@ class MainActivity : AppCompatActivity() {
         //TODO: permissions
         // TODO: NB! LÕPUS KASUTA Camera.release()
 
-        //listItems  = findViewById(R.id.titleListView)
         val db = LocalDbClient.getDatabase(this)!!
         //db?.getBlogDao()?.deleteAllBlogs()  //clean up
+
+
+        //Link to ViewModel:
+        model = ViewModelProviders.of(this).get(BlogViewModel::class.java)
+        blogTitlesAdapter = BlogTitlesAdapter(model, this)
+        titleListView.adapter = blogTitlesAdapter //adapter is set on listView
+
 
         //DATABASE KATSETUS:
         //Inserting data:
@@ -61,19 +64,8 @@ class MainActivity : AppCompatActivity() {
         val blogs = db.getBlogDao().loadBlogs()
         var firstBlog = blogs.get(0)
         Log.i("RESULT: ", ""+ firstBlog.blogId + ", " +firstBlog.blogTitle + ", " + firstBlog.blogDescription)
-
-
-/*        //LISTVIEW FOR BLOG TITLES:
-        var blogTitles = db.getBlogDao().loadBlogTitles()
-        var blogIds = db.getBlogDao().loadBlogIds()
-        if (blogTitles.size>0){
-
-            //listAdapter = ArrayAdapter(this, R.layout.list_row, blogTitles)
-            custAdapter = ownAdapter(blogTitles.toList())
-            //listItems.adapter=custAdapter
-            titleListView.adapter=custAdapter
-        }*/
-
+        model.refresh()
+        blogTitlesAdapter.notifyDataSetChanged()
 
 
 /*        //LAUNCHING MAP ACTIVITY:
@@ -82,42 +74,27 @@ class MainActivity : AppCompatActivity() {
     }
 
     //OPENING EXISTING BLOG (FROM LISTVIEW):
-    fun openBlog(view: View) {
-        //TODO: pass on database handle through intent (?)
+    fun openBlog(id: Int) {  //view: View
         val intent = Intent(this, BlogActivity::class.java)
         intent.putExtra("edit mode", false)
-        //Log.i("RESULT", listItems.selectedItemPosition.toString())
-        //var blogId = blogIds[listItems.selectedItemPosition]
-
-        var itemPosition = Integer.parseInt(view.tag.toString())
-        Log.i("RESULT", itemPosition.toString())
-        var blogId = blogIds[itemPosition]
-
-        intent.putExtra("blog id", blogId)
-        //intent.putExtra("blog name", "Amazing spots in Tartu") //TODO: get blogName from listView (vb-olla peaks kaasa panema hoopis blogi ID andmebaasis?)
+        intent.putExtra("blog id", id)
         startActivityForResult(intent, 1)
     }
 
     //OPENING NEW BLOG ('NEW' BUTTON):
     fun createBlog(view: View) {
-        //TODO: pass on database handle through intent (?)
         val intent = Intent(this, BlogActivity::class.java)
         intent.putExtra("edit mode", true)
-        intent.putExtra("blog name", "new blog")
+        intent.putExtra("blog id", -1)
         startActivityForResult(intent, 1)  //need to get back the name of new blog
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
-        //Getting values from intent:
         if (requestCode==1 && resultCode==2){
-            var newBlogName = data?.getStringExtra("blogName")
-            //TODO: add name of new blog to listview, if name not emty string
+            model.refresh()
+            blogTitlesAdapter.notifyDataSetChanged()
         }
-        //listAdapter.notifyDataSetChanged()
-        //TÄIDA UUESTI LISTVIEW!
-        //custAdapter.notifyDataSetChanged()
     }
 
     //SHOW MAP:
@@ -169,6 +146,9 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(baseContext, MainActivity::class.java)
             startActivity(intent)
             finish()
+        } else {
+            model.refresh()  //tries to refresh the model, if DB has changed. Model will then update the in-memory list.
+            blogTitlesAdapter.notifyDataSetChanged() //also tries to update adapter, because adapter is using a list from the model
         }
     }
 }
