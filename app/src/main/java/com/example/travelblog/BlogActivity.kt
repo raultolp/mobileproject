@@ -7,11 +7,13 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentActivity
 import com.example.travelblog.room.BlogEntity
 import kotlinx.android.synthetic.main.blog_activity.*
 
 
-class BlogActivity: AppCompatActivity() {
+class BlogActivity: AppCompatActivity(), AlertDialogFragment.AlertDialogListener {
 
     var editMode = true
     var selectedPlace = "" //name of selected place (blog item title)
@@ -86,6 +88,7 @@ class BlogActivity: AppCompatActivity() {
     fun saveBlog(view: View) {
         //TODO: add content; dont allow saving two blogs with same name or with blog name being emty string
         deactivateEditMode()
+        showAlertDialog("Alert message text")  //tmp
     }
 
     //CANCEL BUTTON:
@@ -134,6 +137,19 @@ class BlogActivity: AppCompatActivity() {
 
         setResult(2, intent) // setResult(resultCode, resultIntent)
         finish() //back to Main Activity
+    }
+
+    //ALERT DIALOGUE:
+    fun showAlertDialog(msg : String) {
+        val dialog = AlertDialogFragment()
+        dialog.show(supportFragmentManager, msg)
+        //to get a handle to the fragment: findFragmentByTag()
+    }
+    override fun onDialogPositiveClick(dialog: DialogFragment) {
+        Log.i("RESULT", "Ok button pressed")
+    }
+    override fun onDialogNegativeClick(dialog: DialogFragment) {
+        Log.i("RESULT", "Cancel button pressed")
     }
 
 }

@@ -144,13 +144,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if(!hasNoPermissions()){
+/*        if(!hasNoPermissions()){
             val intent = Intent(baseContext, MainActivity::class.java)
             startActivity(intent)
             finish()
         } else {
             model.refresh()  //tries to refresh the model, if DB has changed. Model will then update the in-memory list.
             blogTitlesAdapter.notifyDataSetChanged() //also tries to update adapter, because adapter is using a list from the model
-        }
+        }*/
+        model.refresh()  //tries to refresh the model, if DB has changed. Model will then update the in-memory list.
+        blogTitlesAdapter.notifyDataSetChanged() //also tries to update adapter, because adapter is using a list from the model
     }
 }
