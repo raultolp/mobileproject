@@ -36,12 +36,7 @@ class MainActivity : AppCompatActivity() {
 
         //TODO: toolbar
         //TODO: permissions
-
-
-
         // TODO: NB! LÕPUS KASUTA Camera.release()
-        checkCameraHardware(this)
-
 
         //listItems  = findViewById(R.id.titleListView)
         val db = LocalDbClient.getDatabase(this)!!
@@ -141,6 +136,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        if (hasNoPermissions()) {
+            requestPermission()
+        }else{
+            checkCameraHardware(this)
+        }
+    }
     private fun hasNoPermissions(): Boolean{
         return ContextCompat.checkSelfPermission(this,
             Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this,
