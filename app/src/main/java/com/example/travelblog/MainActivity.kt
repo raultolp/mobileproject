@@ -16,16 +16,23 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.mycameraapi.CameraActivity
 import com.example.travelblog.room.BlogEntity
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
 //    lateinit var mapsActivity: MapsActivity
     private val TAG = "MYAPI"
     private lateinit var model: BlogViewModel
     lateinit var blogTitlesAdapter: BlogTitlesAdapter
+    private lateinit var mMap : GoogleMap
 
     companion object {
         var mPhoto: File? = null
@@ -75,8 +82,9 @@ class MainActivity : AppCompatActivity() {
 
 
         //LAUNCHING MAP ACTIVITY:
-//        mapsActivity = MapsActivity()
-//        showMap()
+        val mapFragment = supportFragmentManager
+            .findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
 
         // Camera test
 //        val intent = Intent(this, CameraActivity::class.java)
@@ -163,5 +171,21 @@ class MainActivity : AppCompatActivity() {
         }*/
         model.refresh()  //tries to refresh the model, if DB has changed. Model will then update the in-memory list.
         blogTitlesAdapter.notifyDataSetChanged() //also tries to update adapter, because adapter is using a list from the model
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        mMap = googleMap
+
+        mMap.uiSettings.isZoomControlsEnabled = true
+        mMap.setMinZoomPreference(11f)
+
+        val delta = LatLng(58.385254, 26.725064)
+        mMap.addMarker(MarkerOptions().position(delta).title("Delta Centre"))
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(delta, 12F))
+
+
+        val markerOptions = MarkerOptions()
+        markerOptions.position(delta)
+        mMap.animateCamera(CameraUpdateFactory.newLatLng(delta))
     }
 }

@@ -1,10 +1,12 @@
 package com.example.travelblog
 
 import android.content.Intent
+import android.location.Location
 import android.os.Bundle
 import android.text.Editable
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
@@ -15,9 +17,20 @@ import com.example.travelblog.room.BlogItemEntity
 import com.example.travelblog.room.BlogItemEntryEntity
 import kotlinx.android.synthetic.main.blog_activity.*
 import com.example.travelblog.LocalDbClient
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 
 
-class BlogActivity: AppCompatActivity(), AlertDialogFragment.AlertDialogListener {
+class BlogActivity: AppCompatActivity(), AlertDialogFragment.AlertDialogListener,
+    OnMapReadyCallback, GoogleMap.OnMarkerDragListener,
+    GoogleMap.OnInfoWindowClickListener
+{
 
     var editMode = true
     var selectedPlace = "" //name of selected place (blog item title)
@@ -25,6 +38,9 @@ class BlogActivity: AppCompatActivity(), AlertDialogFragment.AlertDialogListener
     var savedBlog = BlogEntity(0, "", "")
     var unsavedBlog = BlogEntity(0, "", "")
     var selectedItem = BlogItemEntity(0, 0, "New place", 0.0, 0.0)
+    private lateinit var mMap: GoogleMap
+    private lateinit var marker: Marker
+    var canAddNewMarker = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +62,11 @@ class BlogActivity: AppCompatActivity(), AlertDialogFragment.AlertDialogListener
             blogDescription.text = Editable.Factory.getInstance().newEditable(desc)
         } else {
             activateEditMode()
+        }
+
+        // Activate maps fragment
+        (this.supportFragmentManager.findFragmentById(R.id.blogMap) as SupportMapFragment?)?.let {
+            it.getMapAsync(this)
         }
     }
 
@@ -319,5 +340,67 @@ class BlogActivity: AppCompatActivity(), AlertDialogFragment.AlertDialogListener
     override fun onDialogNegativeClick(dialog: DialogFragment) {
         Log.i("RESULT", "Cancel button pressed")
     }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        mMap = googleMap
+
+        mMap.isMyLocationEnabled = true
+        mMap.uiSettings.isZoomControlsEnabled = true
+        mMap.setMinZoomPreference(11f)
+
+        val delta = LatLng(58.385254, 26.725064)
+        mMap.addMarker(MarkerOptions().position(delta).title("Delta Centre"))
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(delta, 12F))
+
+        val markerOptions = MarkerOptions()
+        markerOptions.position(delta)
+        mMap.animateCamera(CameraUpdateFactory.newLatLng(delta))
+
+        val location = getCurrentLocation()
+
+        if (location != null) {
+            val lat = getCurrentLocation()!!.latitude
+            val lon = getCurrentLocation()!!.longitude
+            val currentLocation = LatLng(lat, lon)
+
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15F))
+        }
+
+        mMap.setOnMapClickListener {
+            if (canAddNewMarker) {
+                marker = mMap.addMarker(
+                    MarkerOptions()
+                        .position(it)
+                        .draggable(true)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                )
+                canAddNewMarker = false
+
+            }
+        }
+        mMap.setOnMarkerDragListener(this)
+        mMap.setOnInfoWindowClickListener {
+            onInfoWindowClick(marker)
+        }
+    }
+
+    fun getCurrentLocation(): Location? {
+        val track_location = TrackLocation(this)
+        val location = track_location.getCurrentLocation()
+        return location
+    }
+
+    override fun onMarkerDragEnd(p0: Marker?) {}
+
+    override fun onMarkerDragStart(p0: Marker?) {}
+
+    override fun onMarkerDrag(draggable: Marker?) {
+        mMap.animateCamera(CameraUpdateFactory.newLatLng(draggable?.position));
+    }
+
+    override fun onInfoWindowClick(p0: Marker?) {
+        Toast.makeText(this, "Clicked info box", Toast.LENGTH_SHORT).show()
+    }
+
 
 }

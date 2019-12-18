@@ -36,32 +36,31 @@
     <!-- android:inputType="text" -> in Edit Mode; change to android:inputType="none" in View mode.
      (android:editable="false"  - was deprecated, recommended to use inputType instead) -->
 
-    <com.google.android.gms.maps.MapView
-        android:id="@+id/mapView"
+    <!--     text="Select a place" -> change to place name (same as marker text) when a place has been selected.-->
+
+
+    <fragment
+        android:id="@+id/blogMap"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/blogTitle" />
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/placeName"
+        app:layout_constraintTop_toBottomOf="@+id/blogTitle"
+        tools:context=".MapsActivity"
+        tools:layout_editor_absoluteX="10dp" />
 
     <TextView
         android:id="@+id/placeName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="15dp"
         android:text="Select a place"
         android:textColor="#03A9F4"
         android:textSize="24sp"
         android:textStyle="italic"
         android:visibility="visible"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mapView" />
-    <!--     text="Select a place" -> change to place name (same as marker text) when a place has been selected.-->
+        app:layout_constraintTop_toBottomOf="@+id/blogMap"
+        app:layout_constraintBottom_toTopOf="@+id/blogDescription"
+        tools:layout_editor_absoluteY="394dp" />
 
     <Button
         android:id="@+id/openItemButton"
@@ -73,30 +72,30 @@
         android:text="Open"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mapView" />
+        app:layout_constraintTop_toBottomOf="@+id/blogMap" />
     <!--     visibility="gone"  -> so user cannot push this button when no place has been selected;
     change visibility to "visible" when a place has been selected. (then the button also moves to
     its designated location on screen (besides the place name text field))
     -->
 
 
+    <!-- android:inputType="text" -> in Edit Mode; change to android:inputType="none" in View mode.
+     (android:editable="false"  - was deprecated, recommended to use inputType instead) -->
+
     <EditText
         android:id="@+id/blogDescription"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="15dp"
         android:layout_marginEnd="10dp"
         android:hint="Blog description"
         android:inputType="text"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toTopOf="@+id/deleteButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.24"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/placeName" />
-    <!-- android:inputType="text" -> in Edit Mode; change to android:inputType="none" in View mode.
-     (android:editable="false"  - was deprecated, recommended to use inputType instead) -->
 
     <Button
         android:id="@+id/editButton"
@@ -116,13 +115,19 @@
         android:id="@+id/cancelButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
         android:layout_marginBottom="10dp"
         android:onClick="cancelInputs"
         android:text="Cancel"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/deleteButton"
         app:layout_constraintStart_toStartOf="parent" />
+    <!--     visibility="gone"  ->  in View mode; visibility="visible"  -> in Edit Mode
+    (then the button also moves to its designated location on screen). -->
+
+    <!--     visibility="gone"  ->  in View mode; visibility="visible"  -> in Edit Mode
+    (then the button also moves to its designated location on screen). -->
+
     <!--     visibility="gone"  ->  in View mode; visibility="visible"  -> in Edit Mode
     (then the button also moves to its designated location on screen). -->
 
@@ -130,42 +135,26 @@
         android:id="@+id/deleteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:text="Delete"
+        android:layout_marginBottom="8dp"
         android:onClick="deleteBlog"
+        android:text="Delete"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintEnd_toStartOf="@+id/saveButton"
+        app:layout_constraintHorizontal_bias="0.74"
         app:layout_constraintStart_toEndOf="@+id/editButton" />
-    <!--     visibility="gone"  ->  in View mode; visibility="visible"  -> in Edit Mode
-    (then the button also moves to its designated location on screen). -->
 
     <Button
         android:id="@+id/saveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:text="Save"
+        android:layout_marginBottom="8dp"
         android:onClick="saveBlog"
+        android:text="Save"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-    <!--     visibility="gone"  ->  in View mode; visibility="visible"  -> in Edit Mode
-    (then the button also moves to its designated location on screen). -->
 
-    <Button
-        android:id="@+id/ajutineNupp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ajutine"
-        android:onClick="onPlaceSelected"
-        app:layout_constraintBottom_toTopOf="@+id/mapView"
-        app:layout_constraintEnd_toStartOf="@+id/mapView"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/mapView"
-        app:layout_constraintTop_toBottomOf="@+id/mapView" />
     <!--     Ajutine nupp, et saaks 3. vaatesse edasi liikuda, kui maps veel valmis pole -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
