@@ -108,7 +108,7 @@ class BlogActivity: AppCompatActivity(), AlertDialogFragment.AlertDialogListener
         unsavedBlog = BlogEntity(0, "", "") //changes were not saved
 //        selectedItem = BlogItemEntity(0, 0, "New place", 0.0, 0.0)
 
-        var intent = Intent()
+        //var intent = Intent()
         //setResult(2, intent) // setResult(resultCode, resultIntent)
         finish() //back to Main Activity
     }
@@ -139,20 +139,21 @@ class BlogActivity: AppCompatActivity(), AlertDialogFragment.AlertDialogListener
             itemid = selectedItem.blogItemId  //check
             val intent = Intent(this, BlogItemActivity::class.java)
             intent.putExtra("editMode", editMode)
-            intent.putExtra("isNewItem", selectedPlaceIsNew)
+            //intent.putExtra("isNewItem", selectedPlaceIsNew)
             intent.putExtra("blog id", blogid)
             intent.putExtra("blogitem id", itemid)
-            startActivityForResult(intent, 3)
+            //startActivityForResult(intent, 3)
+            startActivity(intent)
         }
     }
 
-    //RETURNING FROM BLOG ITEM ACTIVITY:
+/*    //RETURNING FROM BLOG ITEM ACTIVITY:
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode==3 && resultCode==4){
             //model.refresh()  //TODO:  kas vaja?
         }
-    }
+    }*/
 
     //CANCEL BUTTON:
     fun cancelInputs(view: View) {
@@ -283,19 +284,6 @@ class BlogActivity: AppCompatActivity(), AlertDialogFragment.AlertDialogListener
     //BACK BUTTON:
     fun backToMain(view: View) {
         unsavedBlog = BlogEntity(0, "", "") //changes were not saved
-        var intent = Intent()
-
-/*
-        //AJUTINE:
-        val db = LocalDbClient.getDatabase(applicationContext)!!
-        var blog2Title = "title 3"
-        var blog2Desc = "desc 3"
-        var blog2 = BlogEntity(0, blog2Title, blog2Desc) //0 corresponds to 'no value', autogenerates id
-        db?.getBlogDao()?.addBlog(blog2)
-*/
-
-
-        //setResult(2, intent) // setResult(resultCode, resultIntent)
         finish() //back to Main Activity
     }
 
