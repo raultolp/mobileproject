@@ -46,6 +46,9 @@ interface BlogDao {
     @Query("SELECT * FROM blogItems WHERE blogIdRef=:a")  //selected blog's items
     fun loadSingleBlogsItems(a: Int): Array<BlogItemEntity>
 
+    @Query("SELECT blogItemId FROM blogItems")  //blog ids
+    fun loadBlogItemIds(): Array<Int>
+
     //Update Blog:
     @Update
     fun updateBlog(blog: BlogEntity)
@@ -60,7 +63,7 @@ interface BlogDao {
 
     //Add blog item (only coordinates can be added here):
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addBlogItem(blog: BlogItemEntity)
+    fun addBlogItem(blogitem: BlogItemEntity)
 
     //Delete blog item (before deleting, delete all its items and their entries too)- //TODO: CHECK IF DELETES AUTOMATICALLY!
     //the methods for that are below.
@@ -78,6 +81,18 @@ interface BlogDao {
     //Get all blog item entries of a blog item (photos with descriptions, date and time):
     @Query("SELECT * FROM blogItemEntries WHERE blogItemIdRef=:a")  //selected blog
     fun loadEntries(a: Int): Array<BlogItemEntryEntity>
+
+    @Query("SELECT blogItemEntryId FROM blogItemEntries WHERE blogItemIdRef=:a")
+    fun loadEntryIds(a: Int): Array<Int>
+
+    @Query("SELECT * FROM blogItemEntries WHERE blogItemEntryId=:a")
+    fun loadEntry(a: Int): BlogItemEntryEntity
+
+    @Query("SELECT * FROM blogItems WHERE blogItemId=:a")
+    fun loaditem(a: Int): BlogItemEntity
+
+    @Query("SELECT blogItemId FROM blogItems WHERE blogIdRef=:a")  //blog ids
+    fun loadSpecificBlogItemIds(a: Int): Array<Int>
 
     //Update blog item title (place name):
     // see above: updateBlogItem(blog: BlogItemEntity)
@@ -97,6 +112,7 @@ interface BlogDao {
     //Delete blog item entry:
     @Delete
     fun deleteBlogItemEntry(vararg entry:  BlogItemEntryEntity) //vararg- means it can be one or several
+
 
     //--------------------------------------------------------------
 

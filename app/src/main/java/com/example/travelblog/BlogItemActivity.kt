@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.example.travelblog.room.BlogItemEntryEntity
 import com.example.mycameraapi.CameraActivity
 import kotlinx.android.synthetic.main.blog_activity.*
 import kotlinx.android.synthetic.main.blog_item_activity.*
@@ -13,17 +14,26 @@ class BlogItemActivity: AppCompatActivity() {
 
     var editMode = true
     var placeName = "" //blog item title
-    var blogName = "" //if needed as identifier of the blog in database
+    //var blogName = "" //if needed as identifier of the blog in database
     var isNewPlace = false
     var noPhoto = true
+    var blogid = 0
+    var itemid = 0
+    var entries : ArrayList<BlogItemEntryEntity> = arrayListOf()
+    var currentEntryIndex = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.blog_item_activity)
 
+        var db = LocalDbClient.getDatabase(applicationContext)
+
         //Getting values passed on through indents:
         editMode = intent.getBooleanExtra("editMode", false)
         isNewPlace = intent.getBooleanExtra("isNewItem", false)
+        blogid = intent.getIntExtra("blog id", blogid)
+        itemid = intent.getIntExtra("blogitem id", itemid)
+
         if (!isNewPlace){
             blogItemTitle.text = Editable.Factory.getInstance().newEditable(placeName)
             //TODO: get first image, date and time and description from database
@@ -31,15 +41,14 @@ class BlogItemActivity: AppCompatActivity() {
         } else {
             noPhoto = true
         }
-        blogName = intent.getStringExtra("blogName")
+        //placeName = db?.getBlogDao()?.loadPlaceName(itemid)!!   //TODO: FIND BUG!
+        //blogName = intent.getStringExtra("blogName")
         if (!editMode){
             deactivateItemEditMode()
         } else {
             activateItemEditMode()
         }
         updateImageButtons()
-
-
 
     }
 

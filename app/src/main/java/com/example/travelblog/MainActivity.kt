@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         // TODO: NB! LÕPUS KASUTA Camera.release()
 
         val db = LocalDbClient.getDatabase(this)!!
-        //db?.getBlogDao()?.deleteAllBlogs()  //clean up
+        db?.getBlogDao()?.deleteAllBlogs()  //clean up
 
 
         //Link to ViewModel:
@@ -96,16 +96,17 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, BlogActivity::class.java)
         intent.putExtra("edit mode", true)
         intent.putExtra("blog id", -1)
-        startActivityForResult(intent, 1)  //need to get back the name of new blog
+        //startActivityForResult(intent, 1)  //need to get back the name of new blog
+        startActivity(intent)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+/*    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode==1 && resultCode==2){
             model.refresh()
             blogTitlesAdapter.notifyDataSetChanged()
         }
-    }
+    }*/
 
     //SHOW MAP:
 /*    private fun showMap() {
