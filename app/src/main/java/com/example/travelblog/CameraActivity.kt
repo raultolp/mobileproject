@@ -13,6 +13,7 @@ import android.view.SurfaceView
 import android.widget.Button
 import android.widget.FrameLayout
 import com.example.travelblog.CameraPreview
+import com.example.travelblog.MainActivity
 import com.example.travelblog.R
 import java.io.File
 import java.io.FileNotFoundException
@@ -54,6 +55,8 @@ class CameraActivity : Activity() {
         captureButton.setOnClickListener {
             // get an image from the camera
             mCamera?.takePicture(null, null, picture)
+            releaseCamera()
+            //TODO vaja tagasi liikuda
         }
 
     }
@@ -135,6 +138,7 @@ class CameraActivity : Activity() {
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         return when (type) {
             MEDIA_TYPE_IMAGE -> {
+                MainActivity.mPhoto = File("${mediaStorageDir.path}${File.separator}IMG_$timeStamp.jpg")
                 File("${mediaStorageDir.path}${File.separator}IMG_$timeStamp.jpg")
             }
 //            MEDIA_TYPE_VIDEO -> {

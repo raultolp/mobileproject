@@ -17,14 +17,19 @@ import androidx.core.content.ContextCompat
 import com.example.mycameraapi.CameraActivity
 import com.example.travelblog.room.BlogEntity
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.File
 
 
 class MainActivity : AppCompatActivity() {
 
-    //lateinit var mapsActivity: MapsActivity
+//    lateinit var mapsActivity: MapsActivity
     private val TAG = "MYAPI"
     private lateinit var model: BlogViewModel
     lateinit var blogTitlesAdapter: BlogTitlesAdapter
+
+    companion object {
+        var mPhoto: File? = null
+    }
 
     val permissions = arrayOf(
         Manifest.permission.CAMERA,
@@ -69,9 +74,9 @@ class MainActivity : AppCompatActivity() {
         blogTitlesAdapter.notifyDataSetChanged()
 
 
-/*        //LAUNCHING MAP ACTIVITY:
-        mapsActivity = MapsActivity()
-        showMap()*/
+        //LAUNCHING MAP ACTIVITY:
+//        mapsActivity = MapsActivity()
+//        showMap()
 
         // Camera test
 //        val intent = Intent(this, CameraActivity::class.java)
@@ -122,12 +127,12 @@ class MainActivity : AppCompatActivity() {
     }
 
 //     TODO : Fix needed
-    override fun onStart() {
-        super.onStart()
-        if (hasNoPermissions()) {
-            requestPermission()
-        }
-    }
+//    override fun onStart() {
+//        super.onStart()
+//        if (hasNoPermissions()) {
+//            requestPermission()
+//        }
+//    }
 
     private fun hasNoPermissions(): Boolean {
         return ContextCompat.checkSelfPermission(this,

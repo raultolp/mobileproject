@@ -1,9 +1,11 @@
 package com.example.travelblog
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.example.mycameraapi.CameraActivity
 import kotlinx.android.synthetic.main.blog_activity.*
 import kotlinx.android.synthetic.main.blog_item_activity.*
 
@@ -44,7 +46,11 @@ class BlogItemActivity: AppCompatActivity() {
     //CAMERA BUTTON:
     fun openCamera(view: View) {
         //TODO: add content
-        noPhoto = false
+        val intent = Intent(this, CameraActivity::class.java)
+        MainActivity.mPhoto = null
+        startActivity(intent)
+        if (MainActivity.mPhoto === null)
+            noPhoto = false
         updateImageButtons()
     }
 
