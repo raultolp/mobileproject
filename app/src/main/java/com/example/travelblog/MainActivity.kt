@@ -109,7 +109,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         val intent = Intent(this, BlogActivity::class.java)
         intent.putExtra("edit mode", false)
         intent.putExtra("blog id", id)
-        startActivityForResult(intent, 1)
+        //startActivityForResult(intent, 1)
+        startActivity(intent)
     }
 
     //OPENING NEW BLOG ('NEW' BUTTON):
