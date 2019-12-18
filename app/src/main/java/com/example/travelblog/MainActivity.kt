@@ -15,11 +15,14 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.mycameraapi.CameraActivity
+import com.example.travelblog.room.BlogDatabase
 import com.example.travelblog.room.BlogEntity
+import com.example.travelblog.room.BlogItemEntity
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_main.*
@@ -33,6 +36,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var model: BlogViewModel
     lateinit var blogTitlesAdapter: BlogTitlesAdapter
     private lateinit var mMap : GoogleMap
+    private lateinit var db : BlogDatabase
+    private var locations = mutableListOf<BlogItemEntity>()
 
     companion object {
         var mPhoto: File? = null
@@ -51,7 +56,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         //TODO: permissions
         // TODO: NB! LÕPUS KASUTA Camera.release()
 
-        val db = LocalDbClient.getDatabase(this)!!
+        db = LocalDbClient.getDatabase(this)!!
         db?.getBlogDao()?.deleteAllBlogs()  //clean up
 
 
@@ -73,6 +78,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         var blog2 = BlogEntity(0, blog2Title, blog2Desc) //0 corresponds to 'no value', autogenerates id
         db?.getBlogDao()?.addBlog(blog2)
 
+
+        val itemTitle = "Konsum"
+        val latitude = 58.38257849259474
+        val longitude = 26.72865573316813
+        val blogItem1 = BlogItemEntity(1, 1, itemTitle, latitude, longitude)
+        db.getBlogDao().addBlogItem(blogItem1)
+
+
         //Retrieving data:
         val blogs = db.getBlogDao().loadBlogs()
         var firstBlog = blogs.get(0)
@@ -90,6 +103,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 //        val intent = Intent(this, CameraActivity::class.java)
 //        startActivity(intent)
     }
+
 
     //OPENING EXISTING BLOG (FROM LISTVIEW):
     fun openBlog(id: Int) {  //view: View
@@ -169,8 +183,50 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             model.refresh()  //tries to refresh the model, if DB has changed. Model will then update the in-memory list.
             blogTitlesAdapter.notifyDataSetChanged() //also tries to update adapter, because adapter is using a list from the model
         }*/
+        val mapFragment = supportFragmentManager
+            .findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
         model.refresh()  //tries to refresh the model, if DB has changed. Model will then update the in-memory list.
         blogTitlesAdapter.notifyDataSetChanged() //also tries to update adapter, because adapter is using a list from the model
+
+    }
+
+    fun getAllBlogItems() {
+        //Retrieving data:
+        val blogItems = db.getBlogDao().loadSingleBlogsItems(0)
+        if (!blogItems.equals(null)) {
+            for (item in blogItems) {
+                Log.i(TAG, "yoo $item.latitude")
+                Log.i(TAG, "yoo $item.placeName")
+                val pos = LatLng(item.latitude!!, item.longitude!!)
+                Log.i(TAG, pos.toString())
+
+                val oneItem = BlogItemEntity(0, 0, "Maja", 58.385229307651336,26.72947447746992)
+                mMap.addMarker(
+                    MarkerOptions()
+                        .position(LatLng(oneItem.latitude!!, oneItem.longitude!!))
+                        .title(item.placeName)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+
+                )
+                locations.add(oneItem)
+                if (!locations.contains(item)) {
+                    Log.i(TAG, "Not in locations!")
+                    mMap.addMarker(
+                        MarkerOptions()
+                            .position(pos)
+                            .title(item.placeName)
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+
+                    )
+                    locations.add(item)
+                } else {
+                    Log.i(TAG, "In locations! ${item.placeName}")
+                }
+
+            }
+        }
+
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -180,12 +236,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.setMinZoomPreference(11f)
 
         val delta = LatLng(58.385254, 26.725064)
-        mMap.addMarker(MarkerOptions().position(delta).title("Delta Centre"))
+//        mMap.addMarker(MarkerOptions().position(delta).title("Delta Centre"))
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(delta, 12F))
 
 
         val markerOptions = MarkerOptions()
         markerOptions.position(delta)
         mMap.animateCamera(CameraUpdateFactory.newLatLng(delta))
+
+        getAllBlogItems()
     }
 }
