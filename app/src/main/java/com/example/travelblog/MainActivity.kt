@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.mycameraapi.CameraActivity
 import com.example.travelblog.room.BlogDatabase
 import com.example.travelblog.room.BlogEntity
 import com.example.travelblog.room.BlogItemEntity
