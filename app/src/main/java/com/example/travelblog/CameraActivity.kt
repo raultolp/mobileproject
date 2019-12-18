@@ -30,6 +30,7 @@ class CameraActivity : Activity() {
 //    private var mediaRecorder: MediaRecorder? = null
     val MEDIA_TYPE_IMAGE = 1
 //    val MEDIA_TYPE_VIDEO = 2
+    var photo: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,30 +54,20 @@ class CameraActivity : Activity() {
 
         val captureButton: Button = findViewById(R.id.button_capture)
         captureButton.setOnClickListener {
+//            val params: Camera.Parameters? = mCamera?.parameters
+//            params?.focusMode = Camera.Parameters.FOCUS_MODE_AUTO
+//            mCamera?.parameters = params
+
             // get an image from the camera
             mCamera?.takePicture(null, null, picture)
-            releaseCamera()
+
             //TODO vaja tagasi liikuda
+//            releaseCamera()
+//            val intent = Intent(this, MainActivity::class.java)
+//            val returnIntent = this.intent
+//            returnIntent.putExtra("photo", photo)
+//            setResult(Activity.RESULT_OK, returnIntent)
         }
-
-    }
-
-//    override fun onPause() {
-//        super.onPause()
-//        releaseMediaRecorder() // if you are using MediaRecorder, release it first
-//        releaseCamera() // release the camera immediately on pause event
-//    }
-//
-//    private fun releaseMediaRecorder() {
-//        mediaRecorder?.reset() // clear recorder configuration
-//        mediaRecorder?.release() // release the recorder object
-//        mediaRecorder = null
-//        mCamera?.lock() // lock camera for later use
-//    }
-
-    private fun releaseCamera() {
-        mCamera?.release() // release the camera for other applications
-        mCamera = null
     }
 
     /** A safe way to get an instance of the Camera object. */
@@ -136,10 +127,10 @@ class CameraActivity : Activity() {
 
         // Create a media file name
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        photo = "${mediaStorageDir.path}${File.separator}IMG_$timeStamp.jpg"
         return when (type) {
             MEDIA_TYPE_IMAGE -> {
-                MainActivity.mPhoto = File("${mediaStorageDir.path}${File.separator}IMG_$timeStamp.jpg")
-                File("${mediaStorageDir.path}${File.separator}IMG_$timeStamp.jpg")
+                File(photo)
             }
 //            MEDIA_TYPE_VIDEO -> {
 //                File("${mediaStorageDir.path}${File.separator}VID_$timeStamp.mp4")
@@ -147,5 +138,40 @@ class CameraActivity : Activity() {
             else -> null
         }
     }
+
+//    override fun onStart() {
+//        super.onStart()
+//    }
+
+//    override fun onStop() {
+//        super.onStop()
+//        mCamera?.stopPreview()
+//        mCamera?.release()
+//        mCamera = null
+//    }
+
+//    override fun onResume() {
+//        super.onResume()
+////        mCamera = getCameraInstance()
+//    }
+
+    override fun onPause() {
+        super.onPause()
+//        releaseMediaRecorder() // if you are using MediaRecorder, release it first
+//        mCamera?.stopPreview()
+        releaseCamera() // release the camera immediately on pause event
+    }
+
+    private fun releaseCamera() {
+        mCamera?.release() // release the camera for other applications
+        mCamera = null
+    }
+
+//    private fun releaseMediaRecorder() {
+//        mediaRecorder?.reset() // clear recorder configuration
+//        mediaRecorder?.release() // release the recorder object
+//        mediaRecorder = null
+//        mCamera?.lock() // lock camera for later use
+//    }
 
 }

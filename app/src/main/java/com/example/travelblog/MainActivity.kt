@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private var locations = mutableListOf<BlogItemEntity>()
 
     companion object {
-        var mPhoto: File? = null
+        var mPhoto: String? = null
     }
 
     val permissions = arrayOf(
