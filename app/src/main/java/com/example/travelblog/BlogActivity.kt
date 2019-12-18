@@ -57,6 +57,24 @@ class BlogActivity: AppCompatActivity(), AlertDialogFragment.AlertDialogListener
         //TODO: dont allow selecting more than one new location
         //TODO: Selecting new location (putting new marker on map) is only possible in Edit mode
 
+        //Siit saad kätte salvestatud kohtade koordinaadid:
+        var db = LocalDbClient.getDatabase(applicationContext)
+        if (savedBlog.blogId!==null){  //kui blogil puudub id, pole teda salvestatud ja tal ei saa ka  itemeid küljes olla
+            var items =db?.getBlogDao()?.loadSingleBlogsItems(savedBlog.blogId)
+            var lats = arrayListOf<Double>()
+            var longs = arrayListOf<Double>()
+            var ids= arrayListOf<Int>()  //vb ka vaja olla
+            if (items!=null && !items.isEmpty()){
+                for (item in items){
+                    lats.add(item.latitude!!)
+                    longs.add(item.longitude!!)
+                    ids.add(item.blogItemId)
+                }
+            }
+        }
+
+
+
         selectedPlace ="New place"  // "Tartu"  //TODO: change place name if existing marker was selected
         selectedPlaceIsNew = true  //TODO: change to false if not new place
 /*        if (!editMode){

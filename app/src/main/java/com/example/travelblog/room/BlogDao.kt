@@ -46,6 +46,9 @@ interface BlogDao {
     @Query("SELECT * FROM blogItems WHERE blogIdRef=:a")  //selected blog's items
     fun loadSingleBlogsItems(a: Int): Array<BlogItemEntity>
 
+    @Query("SELECT * FROM blogItemEntries WHERE blogItemIdRef=:a")  //selected blogitems's entries
+    fun loadSingleItemEntries(a: Int): Array<BlogItemEntryEntity>
+
     @Query("SELECT blogItemId FROM blogItems")  //blog ids
     fun loadBlogItemIds(): Array<Int>
 
