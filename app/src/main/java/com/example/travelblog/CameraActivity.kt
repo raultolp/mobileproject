@@ -1,4 +1,4 @@
-package com.example.mycameraapi
+package com.example.travelblog
 
 import android.app.Activity
 import android.content.ContentValues.TAG
